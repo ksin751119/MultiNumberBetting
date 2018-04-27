@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MultiNumberBetting - Truffle Webpack Dapp</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+</head>
+<body>
+  <h1>MultiNumber Betting Game</h1>
+  <h2>Ethereum Betting Number Dapp</h2>
+  <h3><span class="black">Contract Address: </span><span id="contract_address"></span></h3>
+  <h3><span class="black">Contract Balance: </span><span id="contract_balance"></span></h3>
+
+  <br>
+  <h1>Guess Your Number(from 1 to 10)</h1>
+  <h3>Max Bet: 3, Min Bet: 1</h3>
+  
+  
+  
+  <br><label for="player">Player:</label><input type="text" id="player" placeholder="e.g., Albert"></input>
+  <br><label for="guess_number">Number:</label><input type="text" id="guess_number" placeholder="e.g., 3"></input>
+  <br><label for="bet">Bet(Ether):</label><input type="text" id="bet" placeholder="e.g., 0.1"></input>
+  <br><br><button id="send" onclick="App.sendBet()">Guess Number</button>
+  <br><br>
+
+
+  <h1>Withdraw EtherFund(Owner only)</h1>
+  <br><label for="return_fund">Return Fund(Ether):</label><input type="text" id="return_fund" placeholder="e.g., 1"></input>
+  <br><br><button id="return" onclick="App.returnFund()">Return Fund</button>
+  <br><br>
+
+  <span id="status"></span>
+  <br>
+  <span class="hint"><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</span>
+  
+
+  <h1>Winning Betting Events</h1>
+  <table id="winEventTable" margin="100" width="100%"></table>
+  
+
+</body>
+</html>
