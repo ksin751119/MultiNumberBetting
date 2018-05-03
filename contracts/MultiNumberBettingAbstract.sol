@@ -3,7 +3,7 @@ pragma solidity ^0.4.4;
 contract MultiNumberBettingAbstract {
 
     uint constant MAX_BET = 3 ether;
-    uint constant MIN_BET = 1 ether;
+    uint constant MIN_BET = 1 finney;
     uint8 constant MAX_GUESS_NUM = 10;
     uint8 constant MIN_GUESS_NUM = 1;
     uint8 constant ODDS = 2;

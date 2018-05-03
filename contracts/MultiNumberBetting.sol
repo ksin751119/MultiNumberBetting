@@ -119,5 +119,11 @@ contract MultiNumberBetting is MultiNumberBettingAbstract{
 
     function() public payable {
     }
+
+    function killContract() public ownerOnly {
+        // suicide(owner);
+        selfdestruct(owner);
+    }
+
     
 }

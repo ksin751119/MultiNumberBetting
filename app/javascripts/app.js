@@ -97,11 +97,18 @@ window.App = {
       multinumberbetting = instance;
       var contract_address_element = document.getElementById("contract_address");
       contract_address_element.innerHTML = multinumberbetting.address;
-      return web3.eth.getBalance(multinumberbetting.address);
-    }).then(function(result){
-      var contract_balance_element = document.getElementById("contract_balance");
-      contract_balance_element.innerHTML = web3.fromWei(result.toNumber());
+      return web3.eth.getBalance(multinumberbetting.address, function(error, result){
+        if (error) {
+          console.log(error);
 
+        } else {
+          var contract_balance_element = document.getElementById("contract_balance");
+          console.log(web3.fromWei(result.toNumber()));
+          contract_balance_element.innerHTML = web3.fromWei(result.toNumber(), 'ether');
+        }
+
+      });
+    
     });
   },
 
@@ -109,7 +116,7 @@ window.App = {
     var self = this;
     var player = document.getElementById("player").value;
     var guess_number = parseInt(document.getElementById("guess_number").value);
-    var bet = parseInt(document.getElementById("bet").value);
+    var bet = parseFloat(document.getElementById("bet").value);
     console.log('player:', player);
     console.log('guess_number:', guess_number);
     console.log('bet:', bet);
@@ -119,7 +126,7 @@ window.App = {
     var multinumberbetting;
     MultiNumberBetting.deployed().then(function(instance) {
       multinumberbetting = instance;
-      return multinumberbetting.guess(guess_number, player, {from: account, value:web3.toWei(bet, 'ether'), gas:6721970});
+      return multinumberbetting.guess(guess_number, player, {from: account, value:web3.toWei(bet, 'ether'), gas:470000});
       //return multinumberbetting.guess(1, 'Guo', {from: account, value:web3.toWei(bet, 'ether')});
     }).then(function(result) {
       console.log(result);
@@ -170,6 +177,17 @@ window.App = {
     });
   },
 
+  suicide: function(){
+    var multinumberbetting;
+    MultiNumberBetting.deployed().then(function(instance) {
+      multinumberbetting = instance;
+      return multinumberbetting.killContract({from: account});
+    }).then(function(result) {
+      console.log('contract killed!')
+      console.log(result);
+    })
+  },
+
   returnFund: function() {
     var self = this;
     var return_fund = document.getElementById("return_fund").value;
@@ -192,15 +210,17 @@ window.App = {
 
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-  //if (typeof web3 !== 'undefined') {
-  if (false) {
+  if (typeof web3 !== 'undefined') {
+  //if (false) {
     console.warn("Using web3 detected from external source. If you find that your accounts don't appear or you have 0 MetaCoin, ensure you've configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask")
     // Use Mist/MetaMask's provider
     window.web3 = new Web3(web3.currentProvider);
+    console.log(web3.currentProvider);
   } else {
     console.warn("No web3 detected. Falling back to http://127.0.0.1:8545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
     window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+    console.log('localhost');
   }
 
   App.start();
